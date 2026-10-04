@@ -1,0 +1,5 @@
+#ifndef CONFIGURATION_HPP
+#define CONFIGURATION_HPP
+
+
+#endif
