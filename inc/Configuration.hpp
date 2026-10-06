@@ -17,6 +17,9 @@ class Configuration{
         // Returns option value using its key
         // If key not found it throws invalid argument exception
         const std::string& getOption(const std::string& optionKey) const;
+
+        // Helper method to trim whitespace from key and value strings
+        std::string trim(const std::string& str);
 };
 
 #endif

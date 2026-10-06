@@ -15,14 +15,17 @@ Configuration::Configuration(const std::string& filepath)
     std::string eachLine;
     while(std::getline(file, eachLine))
     {
+        //Trim each extracted line from file to remove whitespaces
+        std::string trimmedLine = trim(eachLine);
+
         //Ignore empty lines, and commented starting with '#'
-        if(eachLine.empty() || eachLine[0] == '#')
+        if(trimmedLine.empty() || trimmedLine[0] == '#')
         {
             //skip parsed line
             continue;
         }
         //Find the delimiter position which is '='
-        size_t delimiterPos = eachLine.find('=');
+        size_t delimiterPos = trimmedLine.find('=');
         
         //Check if delimiter has been found
         if(delimiterPos != std::string::npos)
@@ -30,8 +33,9 @@ Configuration::Configuration(const std::string& filepath)
             std::string key, value;
 
             //Parse key and value from line using the delimiter
-            key = eachLine.substr(0, delimiterPos);
-            value = eachLine.substr(delimiterPos+1);
+            //Trim before assigning
+            key = trim(trimmedLine.substr(0, delimiterPos));
+            value = trim(trimmedLine.substr(delimiterPos+1));
             
             //Check if key is null before inserting into map
             if(!key.empty())
@@ -55,4 +59,11 @@ const std::string& Configuration::getOption(const std::string& optionKey) const
     }else{
         throw std::invalid_argument("Configuration option not found: " + optionKey);
     }
+}
+
+std::string Configuration::trim(const std::string& str) {
+    size_t first = str.find_first_not_of(" \t\r\n");
+    if (first == std::string::npos) return "";
+    size_t last = str.find_last_not_of(" \t\r\n");
+    return str.substr(first, (last - first + 1));
 }
